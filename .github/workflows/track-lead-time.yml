@@ -1,0 +1,36 @@
+name: Track Lead Time
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  track-lead-time:
+    # PR이 병합되었을 때만 실행
+    if: github.event.pull_request.merged == true
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Calculate Lead Time
+        run: |
+          FIRST_COMMIT_TIME="${{ github.event.pull_request.created_at }}"
+          MERGE_TIME="${{ github.event.pull_request.merged_at }}"
+
+          # Python 표준 라이브러리를 사용해 운영체제별 date 명령 차이를 피함
+          LEAD_TIME=$(FIRST_COMMIT_TIME="$FIRST_COMMIT_TIME" MERGE_TIME="$MERGE_TIME" python3 - <<'PY'
+          import os
+          from datetime import datetime
+
+          first_commit_time = datetime.fromisoformat(
+              os.environ["FIRST_COMMIT_TIME"].replace("Z", "+00:00")
+          )
+          merge_time = datetime.fromisoformat(
+              os.environ["MERGE_TIME"].replace("Z", "+00:00")
+          )
+          print(int((merge_time - first_commit_time).total_seconds()))
+          PY
+          )
+
+          echo "Lead Time: $LEAD_TIME seconds"
