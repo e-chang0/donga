@@ -1,0 +1,21 @@
+# 배포 성공/실패 결과 추적
+name: Track Deployment Result
+
+on:
+  deployment_status:
+
+jobs:
+  track-result:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Result
+        run: |
+          STATUS="${{ github.event.deployment_status.state }}"
+          # 상태에 따른 분기 처리
+          if [ "$STATUS" = "success" ]; then
+            echo "✅ Deployment succeeded"
+          elif [ "$STATUS" = "failure" ] || [ "$STATUS" = "error" ]; then
+            echo "❌ Deployment failed"
+          else
+            echo "Deployment status: $STATUS"
+          fi

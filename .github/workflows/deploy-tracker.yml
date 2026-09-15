@@ -1,0 +1,14 @@
+# GitHub Actions로 배포 빈도 추적
+name: Track Deployments
+
+on:
+  deployment:
+
+jobs:
+  track-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Deployment
+        run: |
+          echo "Deployment at: $(date)"
+          echo "Environment: ${{ github.event.deployment.environment }}"

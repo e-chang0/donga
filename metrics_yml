@@ -1,0 +1,19 @@
+name: Track Lead Time
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  track-lead-time:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Calculate Lead Time
+        run: |
+          FIRST_COMMIT_TIME="${{ github.event.pull_request.created_at }}"
+          MERGE_TIME="${{ github.event.pull_request.merged_at }}"
+
+          LEAD_TIME=$(( $(date -d "$MERGE_TIME" +%s) - $(date -d "$FIRST_COMMIT_TIME" +%s) ))
+          echo "Lead Time: $LEAD_TIME seconds"
