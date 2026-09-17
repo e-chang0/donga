@@ -1,0 +1,37 @@
+# GitHub Actions 스케줄러로 주간 완료 작업 수 집계 및 리포팅
+name: Weekly Throughput
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # 매주 일요일 00:00 UTC 실행
+  workflow_dispatch:
+
+permissions:
+  issues: read
+
+jobs:
+  calculate-throughput:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Count and report weekly completed issues
+        shell: bash
+        run: |
+          START_TIME=$(date -u -d '7 days ago' '+%Y-%m-%dT%H:%M:%SZ')
+          END_TIME=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+
+          CLOSED_ISSUES=$(gh api --method GET search/issues \
+            -f q="repo:${GITHUB_REPOSITORY} is:issue is:closed closed:${START_TIME}..${END_TIME}" \
+            --jq '.total_count')
+
+          echo "Weekly throughput: ${CLOSED_ISSUES} completed issues"
+
+          {
+            echo "## Weekly Throughput Report"
+            echo
+            echo "- Repository: \`${GITHUB_REPOSITORY}\`"
+            echo "- Period (UTC): ${START_TIME} ~ ${END_TIME}"
+            echo "- Completed issues: **${CLOSED_ISSUES}**"
+          } >> "$GITHUB_STEP_SUMMARY"
