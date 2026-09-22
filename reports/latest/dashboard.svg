@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="260" viewBox="0 0 1000 260" role="img" aria-labelledby="title desc">
-<title id="title">DORA metrics dashboard</title><desc id="desc">The first collection run has not completed yet.</desc>
-<style>.title{font:700 24px system-ui;fill:#f4f7ff}.meta{font:14px system-ui;fill:#91a0bb}.value{font:700 27px system-ui;fill:#63e6be}</style>
-<rect width="1000" height="260" rx="18" fill="#0d1423"/><text x="36" y="65" class="title">DORA delivery performance</text>
-<text x="36" y="104" class="meta">Run the “DORA Metrics” workflow to collect this repository’s production deployment data.</text>
-<text x="36" y="171" class="value">Awaiting first collection</text>
+<title id="title">DORA metrics dashboard</title>
+<desc id="desc">Current four key DORA metrics for the repository</desc>
+<style>.title{font:700 24px system-ui;fill:#f4f7ff}.meta{font:13px system-ui;fill:#91a0bb}.label{font:600 12px system-ui;fill:#8ea5cd;letter-spacing:.7px}.value{font:700 27px system-ui;fill:#63e6be}</style>
+<rect width="1000" height="260" rx="18" fill="#0d1423"/>
+<text x="28" y="43" class="title">DORA delivery performance</text>
+<text x="28" y="69" class="meta">Window: 2026-08-23T06:29:41Z - 2026-09-22T06:29:41Z · Updated: 2026-09-22T06:29:41Z</text>
+<rect x="28" y="96" width="216" height="118" rx="14" fill="#172033" stroke="#293650"/><text x="46" y="129" class="label">LEAD TIME</text><text x="46" y="178" class="value">N/A</text><rect x="264" y="96" width="216" height="118" rx="14" fill="#172033" stroke="#293650"/><text x="282" y="129" class="label">DEPLOY FREQUENCY</text><text x="282" y="178" class="value">0.00/day</text><rect x="500" y="96" width="216" height="118" rx="14" fill="#172033" stroke="#293650"/><text x="518" y="129" class="label">MTTR</text><text x="518" y="178" class="value">N/A</text><rect x="736" y="96" width="216" height="118" rx="14" fill="#172033" stroke="#293650"/><text x="754" y="129" class="label">CHANGE FAILURE RATE</text><text x="754" y="178" class="value">N/A</text>
 </svg>

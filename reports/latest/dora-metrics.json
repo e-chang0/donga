@@ -1,10 +1,41 @@
 {
   "schema_version": 1,
-  "status": "awaiting_first_collection",
+  "repository": "e-chang0/donga",
+  "generated_at": "2026-09-22T06:29:41Z",
+  "period": {
+    "start": "2026-08-23T06:29:41Z",
+    "end": "2026-09-22T06:29:41Z",
+    "days": 30
+  },
+  "configuration": {
+    "production_environment_pattern": "^(production|prod)$"
+  },
   "metrics": {
-    "lead_time_for_changes": null,
-    "deployment_frequency": null,
-    "mean_time_to_restore": null,
-    "change_failure_rate": null
+    "lead_time_for_changes": {
+      "median_hours": null,
+      "sample_size": 0,
+      "definition": "first PR commit to the observed successful production deployment of its SHA"
+    },
+    "deployment_frequency": {
+      "per_day": 0.0,
+      "successful_deployments": 0,
+      "definition": "successful production deployments per day"
+    },
+    "mean_time_to_restore": {
+      "mean_hours": null,
+      "resolved_incidents": 0,
+      "open_incident": false,
+      "definition": "first failed production deployment to the next successful deployment"
+    },
+    "change_failure_rate": {
+      "percent": null,
+      "failed_deployments": 0,
+      "completed_deployments": 0,
+      "definition": "failed or errored production deployments / completed production deployments"
+    }
+  },
+  "source_data": {
+    "deployments": [],
+    "deployed_pull_requests": []
   }
 }
