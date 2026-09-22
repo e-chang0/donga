@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "repository": "e-chang0/donga",
-  "generated_at": "2026-09-22T06:29:41Z",
+  "generated_at": "2026-09-22T06:32:32Z",
   "period": {
-    "start": "2026-08-23T06:29:41Z",
-    "end": "2026-09-22T06:29:41Z",
+    "start": "2026-08-23T06:32:32Z",
+    "end": "2026-09-22T06:32:32Z",
     "days": 30
   },
   "configuration": {

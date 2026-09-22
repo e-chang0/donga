@@ -4,6 +4,6 @@
 <style>.title{font:700 24px system-ui;fill:#f4f7ff}.meta{font:13px system-ui;fill:#91a0bb}.label{font:600 12px system-ui;fill:#8ea5cd;letter-spacing:.7px}.value{font:700 27px system-ui;fill:#63e6be}</style>
 <rect width="1000" height="260" rx="18" fill="#0d1423"/>
 <text x="28" y="43" class="title">DORA delivery performance</text>
-<text x="28" y="69" class="meta">Window: 2026-08-23T06:29:41Z - 2026-09-22T06:29:41Z · Updated: 2026-09-22T06:29:41Z</text>
+<text x="28" y="69" class="meta">Window: 2026-08-23T06:32:32Z - 2026-09-22T06:32:32Z · Updated: 2026-09-22T06:32:32Z</text>
 <rect x="28" y="96" width="216" height="118" rx="14" fill="#172033" stroke="#293650"/><text x="46" y="129" class="label">LEAD TIME</text><text x="46" y="178" class="value">N/A</text><rect x="264" y="96" width="216" height="118" rx="14" fill="#172033" stroke="#293650"/><text x="282" y="129" class="label">DEPLOY FREQUENCY</text><text x="282" y="178" class="value">0.00/day</text><rect x="500" y="96" width="216" height="118" rx="14" fill="#172033" stroke="#293650"/><text x="518" y="129" class="label">MTTR</text><text x="518" y="178" class="value">N/A</text><rect x="736" y="96" width="216" height="118" rx="14" fill="#172033" stroke="#293650"/><text x="754" y="129" class="label">CHANGE FAILURE RATE</text><text x="754" y="178" class="value">N/A</text>
 </svg>
