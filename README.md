@@ -1,5 +1,15 @@
 # 동아대학교 학습 저장소
 
+## DORA 지표
+
+![DORA 4대 지표 대시보드](reports/latest/dashboard.svg)
+
+매주 GitHub Actions가 최근 30일의 production 배포를 기준으로 Lead Time, Deployment Frequency, MTTR, Change Failure Rate를 자동 집계합니다. 실행 결과는 [`reports/latest`](reports/latest)에 누적되고, 원본 JSON과 주간 보고서는 각 Actions 실행의 artifact로도 90일간 보관됩니다.
+
+- 수동 실행: **Actions → DORA Metrics → Run workflow**
+- 운영 환경 이름: 기본값 `production` 또는 `prod`
+- 상세 산식과 데이터 제약: [`reports/latest/report.md`](reports/latest/report.md) (첫 실행 후 생성)
+
 동아대학교 수업에서 작성한 강의 요약, 과제, 실습 코드를 정리한 저장소입니다.
 
 ## 저장소 구성

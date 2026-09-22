@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "status": "awaiting_first_collection",
+  "metrics": {
+    "lead_time_for_changes": null,
+    "deployment_frequency": null,
+    "mean_time_to_restore": null,
+    "change_failure_rate": null
+  }
+}

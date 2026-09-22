@@ -1,0 +1,71 @@
+name: DORA Metrics
+
+on:
+  schedule:
+    - cron: "17 0 * * 1"
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: Measurement window in days
+        required: false
+        default: "30"
+
+permissions:
+  actions: read
+  contents: write
+  deployments: read
+  pull-requests: read
+
+concurrency:
+  group: dora-metrics-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      LOOKBACK_DAYS: ${{ inputs.lookback_days || '30' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run metric unit tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Collect DORA metrics
+        run: >-
+          python scripts/collect_dora_metrics.py
+          --days "$LOOKBACK_DAYS"
+          --output-dir reports/latest
+
+      - name: Publish job summary
+        run: cat reports/latest/report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload JSON and report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dora-metrics-${{ github.run_id }}
+          path: |
+            reports/latest/dora-metrics.json
+            reports/latest/report.md
+            reports/latest/dashboard.svg
+          retention-days: 90
+
+      - name: Commit latest dashboard and report
+        run: |
+          if git diff --quiet -- reports/latest; then
+            echo "No report changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/latest
+          git commit -m "chore(metrics): update weekly DORA report"
+          git push
