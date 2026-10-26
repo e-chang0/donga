@@ -1,7 +1,7 @@
 # Weekly DORA report
 
-Generated at **2026-10-19T04:38:39Z** for `e-chang0/donga`.
-Measurement window: **2026-09-19T04:38:39Z – 2026-10-19T04:38:39Z** (30.0 days)
+Generated at **2026-10-26T04:44:44Z** for `e-chang0/donga`.
+Measurement window: **2026-09-26T04:44:44Z – 2026-10-26T04:44:44Z** (30.0 days)
 
 | Metric | Result | Evidence |
 |---|---:|---:|
