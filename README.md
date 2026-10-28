@@ -4,13 +4,23 @@
 
 ![DORA 4대 지표 대시보드](reports/latest/dashboard.svg)
 
-매주 GitHub Actions가 최근 30일의 production 배포를 기준으로 Lead Time, Deployment Frequency, MTTR, Change Failure Rate를 자동 집계합니다. 실행 결과는 [`reports/latest`](reports/latest)에 누적되고, 원본 JSON과 주간 보고서는 각 Actions 실행의 artifact로도 90일간 보관됩니다.
+매주 GitHub Actions가 최근 30일의 production 배포를 기준으로 Lead Time, Deployment Frequency, MTTR, Change Failure Rate를 자동 집계합니다. 원본 JSON과 주간 보고서는 각 Actions 실행의 artifact로 90일간 보관됩니다. 변경된 보고서는 `feature/dora-report-*` 브랜치에 저장되며, Actions 실행 요약의 비교 링크에서 PR을 열어 검증·병합하면 [`reports/latest`](reports/latest)의 대시보드가 갱신됩니다.
 
 - 수동 실행: **Actions → DORA Metrics → Run workflow**
 - 운영 환경 이름: 기본값 `production` 또는 `prod`
 - 상세 산식과 데이터 제약: [`reports/latest/report.md`](reports/latest/report.md) (첫 실행 후 생성)
 
 동아대학교 수업에서 작성한 강의 요약, 과제, 실습 코드를 정리한 저장소입니다.
+
+## 4주차 GitHub Flow·코드 리뷰 실습
+
+- [기여 가이드](CONTRIBUTING.md): Feature 브랜치 전략과 Conventional Commits
+- [리뷰 가이드](docs/REVIEW_GUIDE.md): `[MUST]`·`[SHOULD]` 피드백 및 자기 리뷰 구분
+- [CODEOWNERS](.github/CODEOWNERS) · [PR 템플릿](.github/pull_request_template.md)
+- [브랜치 보호 운영](docs/BRANCH_PROTECTION.md): main 보호와 기존 DORA 자동화 연동
+- [4주차 과제 제출 기록](https://github.com/e-chang0/donga/pull/6): PR·자기 리뷰 3건과 실제 검증 결과
+
+`Collaboration Checks`는 PR 제목·새 일반 커밋·Feature 브랜치 이름·공백 오류를 검사하고, 기존 DORA 테스트와 PR 규칙 회귀 테스트를 실행합니다. 로컬 검증은 `python -m unittest discover -s tests -v`로 실행할 수 있습니다.
 
 ## 저장소 구성
 

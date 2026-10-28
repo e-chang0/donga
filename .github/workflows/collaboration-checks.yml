@@ -1,0 +1,32 @@
+name: Collaboration Checks
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  collaboration-checks:
+    name: collaboration-checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out full PR history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Check PR conventions and whitespace
+        if: github.event_name == 'pull_request'
+        run: python scripts/check_pr_conventions.py
+      - name: Run DORA and PR policy regression tests
+        run: python -m unittest discover -s tests -v
