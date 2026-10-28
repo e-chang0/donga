@@ -18,6 +18,7 @@
 - [리뷰 가이드](docs/REVIEW_GUIDE.md): `[MUST]`·`[SHOULD]` 피드백 및 자기 리뷰 구분
 - [CODEOWNERS](.github/CODEOWNERS) · [PR 템플릿](.github/pull_request_template.md)
 - [브랜치 보호 운영](docs/BRANCH_PROTECTION.md): main 보호와 기존 DORA 자동화 연동
+- [4주차 과제 제출 기록](https://github.com/e-chang0/donga/pull/6): PR·자기 리뷰 3건과 실제 검증 결과
 
 `Collaboration Checks`는 PR 제목·새 일반 커밋·Feature 브랜치 이름·공백 오류를 검사하고, 기존 DORA 테스트와 PR 규칙 회귀 테스트를 실행합니다. 로컬 검증은 `python -m unittest discover -s tests -v`로 실행할 수 있습니다.
 

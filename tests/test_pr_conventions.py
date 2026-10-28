@@ -1,4 +1,6 @@
 import importlib.util
+import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -45,6 +47,38 @@ class PullRequestPolicyTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 policy.check_event(event)
         run.assert_not_called()
+
+    def test_real_git_history_keeps_shell_metadata_literal(self):
+        real_run = subprocess.run
+        with tempfile.TemporaryDirectory() as directory:
+            repository = Path(directory)
+
+            def git(*args):
+                return real_run(
+                    ["git", *args], cwd=repository, check=True,
+                    capture_output=True, text=True, encoding="utf-8",
+                ).stdout.strip()
+
+            git("init", "--initial-branch=main")
+            git("-c", "user.name=Policy Test", "-c", "user.email=test@example.com",
+                "commit", "--allow-empty", "-m", "chore: initialize fixture")
+            base = git("rev-parse", "HEAD")
+            git("switch", "-c", "feature/injection-check")
+            (repository / "fixture.txt").write_text("safe input\n", encoding="utf-8")
+            git("add", "fixture.txt")
+            git("-c", "user.name=Policy Test", "-c", "user.email=test@example.com",
+                "commit", "-m", "fix: $(touch injected)")
+            event = {"pull_request": {
+                "title": "fix: $(touch injected)", "base": {"sha": base},
+                "head": {"sha": git("rev-parse", "HEAD"), "ref": "feature/injection-check"},
+            }}
+
+            def run_in_repository(args, **kwargs):
+                return real_run(args, cwd=repository, **kwargs)
+
+            with patch.object(policy.subprocess, "run", side_effect=run_in_repository):
+                self.assertEqual(policy.check_event(event), [])
+            self.assertFalse((repository / "injected").exists())
 
 
 if __name__ == "__main__":
