@@ -1,0 +1,9 @@
+# 현재 개인 학습 저장소의 실제 관리자입니다.
+# 팀원 참여 시 write 권한이 있는 실제 GitHub 아이디를 함께 등록합니다.
+# 작성자 본인은 자신의 PR을 승인할 수 없습니다.
+* @e-chang0
+
+# CODEOWNERS 자체와 자동화도 관리자가 검토합니다.
+/.github/ @e-chang0
+/scripts/ @e-chang0
+/tests/ @e-chang0
