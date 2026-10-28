@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -58,14 +60,24 @@ jobs:
             reports/latest/dashboard.svg
           retention-days: 90
 
-      - name: Commit latest dashboard and report
+      - name: Publish report to a feature branch
+        env:
+          REPORT_BRANCH: feature/dora-report-${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           if git diff --quiet -- reports/latest; then
             echo "No report changes to commit."
             exit 0
           fi
+          git switch -c "$REPORT_BRANCH"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add reports/latest
           git commit -m "chore(metrics): update weekly DORA report"
-          git push
+          git push origin "HEAD:refs/heads/$REPORT_BRANCH"
+          {
+            echo "## Review the report before merging"
+            echo "Report collection and the 90-day artifact are complete."
+            echo "Open a PR from this link, use the title chore(metrics): update weekly DORA report, and wait for collaboration-checks:"
+            echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/main...${REPORT_BRANCH}?expand=1"
+            echo "The default GITHUB_TOKEN does not automatically start PR workflows; opening the PR with your account starts normal checks."
+          } >> "$GITHUB_STEP_SUMMARY"
