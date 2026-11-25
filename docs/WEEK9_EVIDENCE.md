@@ -76,16 +76,17 @@ GitHub Settings의 Allow auto-merge를 활성화했다. 사용자가 GitHub의 C
 현재 npm 의존성은 최신 버전이므로 실제 npm 패치 Dependabot PR의 자동 병합은 아직
 관찰되지 않았다. npm patch PR이 생성되면 자동머지 워크플로가 조건을 검사한다.
 
-## 본인 PC 설치·남은 검증
+## 본인 PC 설치·실행 검증 완료
 
 - Windows 11 Pro x64, 펌웨어 가상화 활성화 확인.
 - Docker Desktop 4.100.1: 공식 Docker Inc 서명 확인, 사용자 계정 설치 exit code `0`.
 - Docker CLI `29.9.3` 실행 확인.
 - WSL 3.0.5.0: 공식 Microsoft Corporation 서명 확인, 설치 exit code `0`.
-- Virtual Machine Platform 활성화 exit code `3010`: **PC 재부팅 필요**.
-- 로컬 Docker 컨테이너 실행은 재부팅 후 검증할 예정으로, 현재 미완료다.
+- Virtual Machine Platform 활성화 후 사용자가 PC를 재부팅하고 Docker Desktop을 실행했다.
+- Docker client·server 연결 성공: `desktop-linux`, Linux/amd64 엔진 `29.9.3`.
+- 본인 PC에서 1.0.1 소스의 Docker 이미지 빌드와 컨테이너 실행 검증을 모두 완료했다(exit code `0`).
 
-재부팅 후 Docker Desktop을 실행하고 저장소 루트에서 다음을 수행한다.
+실제 수행한 명령:
 
 ```powershell
 docker version
@@ -93,5 +94,15 @@ docker build -t study-progress:local packages/study-progress
 node scripts/verify-container.mjs study-progress:local
 ```
 
-GitHub runner 실행 성공은 본인 PC의 로컬 Docker 성공으로 표시하지 않는다.
+실제 로컬 검증 출력:
+
+```json
+{"image":"study-progress:local","health":"ok","progress":"ok","invalidInput":"ok","user":"node"}
+```
+
+정상 health 응답, 3/9 학습 진도 계산, 잘못된 진도의 HTTP 400, 비 root 사용자 실행을
+확인했다. 검증용 컨테이너는 스크립트가 종료하면서 정리했다.
+이미지 ID·검증 시각·결과는 [로컬 실행 증빙 JSON](../reports/week9/local-verification.json)에 기록했다.
+
+GitHub runner 검증과 본인 PC의 로컬 Docker 검증을 각각 실제로 수행했다.
 Snyk는 사용하지 않았으며, 이번 실습의 보안 스캐너는 npm audit이다.

@@ -1,0 +1,17 @@
+{
+    "verified_at_utc":  "2026-11-25T04:26:40.8228728Z",
+    "machine":  "User Windows 11 PC",
+    "context":  "desktop-linux",
+    "package_version":  "1.0.1",
+    "image":  "study-progress:local",
+    "image_id":  "sha256:a91daed6bbc71f33f3cfa94fb15a95ba661591899986c5bbf740ec2d36caeb27",
+    "checks":  {
+                   "image":  "study-progress:local",
+                   "health":  "ok",
+                   "progress":  "ok",
+                   "invalidInput":  "ok",
+                   "user":  "node"
+               },
+    "exit_code":  0,
+    "container_cleaned_up":  true
+}
