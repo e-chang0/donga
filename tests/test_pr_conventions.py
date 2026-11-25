@@ -14,6 +14,12 @@ SPEC.loader.exec_module(policy)
 
 
 class PullRequestPolicyTests(unittest.TestCase):
+    def test_dependabot_branch_requires_verified_actor_flag(self):
+        args = ("chore(deps): bump semver", "dependabot/npm_and_yarn/packages/study-progress/npm-patches-123", ["chore(deps): bump semver"])
+        self.assertTrue(policy.validate_metadata(*args))
+        self.assertEqual(policy.validate_metadata(*args, dependabot=True), [])
+        self.assertTrue(policy.validate_metadata(args[0], "main", args[2], dependabot=True))
+
     def test_accepts_scoped_unscoped_and_breaking_changes(self):
         self.assertEqual(policy.validate_metadata(
             "ci(review): add checks", "feature/collaboration-checks",

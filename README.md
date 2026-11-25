@@ -22,6 +22,14 @@
 
 `Collaboration Checks`는 PR 제목·새 일반 커밋·Feature 브랜치 이름·공백 오류를 검사하고, 기존 DORA 테스트와 PR 규칙 회귀 테스트를 실행합니다. 로컬 검증은 `python -m unittest discover -s tests -v`로 실행할 수 있습니다.
 
+## 9주차 GitHub Packages·의존성 보안 실습
+
+- [실습 절차·정책·제출 체크리스트](docs/WEEK9.md)
+- [npm 패키지](packages/study-progress): `@e-chang0/study-progress`
+- [Dependabot 설정](.github/dependabot.yml): npm·Docker·Actions 업데이트
+- [패키지 CI](.github/workflows/package-ci.yml) · [태그 배포](.github/workflows/package-publish.yml)
+- [정기 보안 리포트](.github/workflows/dependency-security.yml) · [조건부 자동머지](.github/workflows/dependabot-automerge.yml)
+
 ## 저장소 구성
 
 | 경로 | 내용 |

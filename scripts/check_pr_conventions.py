@@ -13,14 +13,16 @@ CONVENTIONAL = re.compile(
     r"(?:\([A-Za-z0-9_./-]+\))?!?: \S[^\r\n]*"
 )
 FEATURE_BRANCH = re.compile(r"feature/[a-z0-9]+(?:[/-][a-z0-9]+)*")
+DEPENDABOT_BRANCH = re.compile(r"dependabot/(?:npm_and_yarn|docker|github_actions)/[^\s]+")
 SHA = re.compile(r"[0-9a-f]{40}")
 
 
-def validate_metadata(title, branch, subjects):
+def validate_metadata(title, branch, subjects, *, dependabot=False):
     errors = []
     if not CONVENTIONAL.fullmatch(title):
         errors.append("PR title must use Conventional Commits.")
-    if not FEATURE_BRANCH.fullmatch(branch):
+    if not (FEATURE_BRANCH.fullmatch(branch) or
+            (dependabot and DEPENDABOT_BRANCH.fullmatch(branch))):
         errors.append("PR branch must use feature/<lowercase-kebab-name>.")
     if not subjects:
         errors.append("PR must contain at least one non-merge commit.")
@@ -39,7 +41,12 @@ def check_event(event):
         ["git", "log", "--no-merges", "--format=%s", f"{base}..{head}"],
         check=True, capture_output=True, text=True, encoding="utf-8",
     ).stdout.splitlines()
-    errors = validate_metadata(pull["title"], pull["head"]["ref"], subjects)
+    dependabot = (
+        pull.get("user", {}).get("login") == "dependabot[bot]"
+        and pull.get("head", {}).get("repo", {}).get("full_name") is not None
+        and pull["head"]["repo"]["full_name"] == pull.get("base", {}).get("repo", {}).get("full_name")
+    )
+    errors = validate_metadata(pull["title"], pull["head"]["ref"], subjects, dependabot=dependabot)
     whitespace = subprocess.run(
         ["git", "diff", "--check", f"{base}...{head}"],
         capture_output=True, text=True, encoding="utf-8",
