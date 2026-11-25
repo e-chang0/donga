@@ -1,0 +1,18 @@
+{
+  "name": "@e-chang0/study-progress",
+  "version": "1.0.0",
+  "description": "Study progress and release version utilities for the donga coursework repository",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": "./src/index.js",
+  "files": ["src", "README.md"],
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test",
+    "prepublishOnly": "npm test"
+  },
+  "engines": { "node": ">=24" },
+  "repository": { "type": "git", "url": "git+https://github.com/e-chang0/donga.git", "directory": "packages/study-progress" },
+  "publishConfig": { "registry": "https://npm.pkg.github.com" },
+  "dependencies": { "semver": "^7.8.6" }
+}

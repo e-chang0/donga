@@ -1,0 +1,4 @@
+node_modules/
+*.tgz
+reports/week9-local/
+__pycache__/

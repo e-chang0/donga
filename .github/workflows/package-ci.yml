@@ -1,0 +1,77 @@
+name: Package CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, feature/week9-packages-security]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  npm-tests:
+    name: npm-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts
+        working-directory: packages/study-progress
+      - run: npm test
+        working-directory: packages/study-progress
+      - run: node --test scripts/audit-policy.test.mjs
+      - name: Test the packaged consumer installation
+        working-directory: packages/study-progress
+        shell: bash
+        run: |
+          TARBALL=$(npm pack --silent)
+          CONSUMER=$(mktemp -d)
+          npm install --prefix "$CONSUMER" --ignore-scripts "$PWD/$TARBALL"
+          cd "$CONSUMER"
+          node --input-type=module -e "import { summarizeProgress } from '@e-chang0/study-progress'; if (summarizeProgress(3,9).percent !== 33) process.exit(1)"
+
+  security-audit:
+    name: security-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts
+        working-directory: packages/study-progress
+      - run: node scripts/security-audit.mjs reports/security
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: npm-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: reports/security/
+          if-no-files-found: error
+          retention-days: 90
+
+  docker-smoke:
+    name: docker-smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: docker build --tag study-progress:ci packages/study-progress
+      - run: node scripts/verify-container.mjs study-progress:ci
