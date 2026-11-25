@@ -25,6 +25,7 @@
 ## 9주차 GitHub Packages·의존성 보안 실습
 
 - [실습 절차·정책·제출 체크리스트](docs/WEEK9.md)
+- [실제 배포·CI·보안 검사 수행 기록](docs/WEEK9_EVIDENCE.md)
 - [npm 패키지](packages/study-progress): `@e-chang0/study-progress`
 - [Dependabot 설정](.github/dependabot.yml): npm·Docker·Actions 업데이트
 - [패키지 CI](.github/workflows/package-ci.yml) · [태그 배포](.github/workflows/package-publish.yml)
